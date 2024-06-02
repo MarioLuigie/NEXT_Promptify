@@ -54,3 +54,24 @@ export default nextConfig
 ////   images: {
 //     domains: ['lh3.googleusercontent.com'],
 //   }, ====> zdeprecjonowane od Next 14 zastapić tym co powyzej
+
+// Oto co oznacza ten zapis:
+
+//     module.exports = { ... }: Eksportowanie obiektu konfiguracyjnego w Node.js.
+//     images: Sekcja konfiguracji dotycząca obrazów.
+//     remotePatterns: Lista wzorców (patterns) dozwolonych zdalnych źródeł obrazów.
+//         protocol: Protokół, który musi być używany (np. https).
+//         hostname: Hostname (nazwa hosta), z którego obrazy są pobierane (np. example.com).
+//         port: Port, z którego obrazy są pobierane (pusty string oznacza domyślny port, czyli 80 dla http i 443 dla https).
+//         pathname: Ścieżka, która musi pasować do obrazów (tu: /account123/** oznacza, że dowolne pliki w katalogu account123 i jego podkatalogach są dozwolone).
+
+// Przykład ten zezwala na ładowanie obrazów z serwera https://example.com z dowolną ścieżką zaczynającą się od /account123/.
+
+// W tym przykładzie:
+
+//     protocol: 'https': Ustawia protokół na https.
+//     hostname: 'lh3.googleusercontent.com': Ustawia nazwę hosta na lh3.googleusercontent.com.
+//     port: '': Pozostawia port pusty, co oznacza domyślny port dla https (443).
+//     pathname: '/**': Pozwala na wszystkie ścieżki (/** oznacza dowolną ścieżkę).
+
+// Taka konfiguracja pozwoli Next.js na ładowanie obrazów z dowolnej ścieżki na domenie lh3.googleusercontent.com za pomocą protokołu HTTPS.
