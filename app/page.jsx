@@ -6,7 +6,6 @@ export default function Home() {
 			<h1 className="head_text text-center">Discover and Share</h1>
 			<br className="max-md:hidden" />
 			<span className="text-orange-500 text-center text-3xl pt-5">
-				{' '}
 				AI-Powered Prompts
 			</span>
 			<p className="desc text-center">
