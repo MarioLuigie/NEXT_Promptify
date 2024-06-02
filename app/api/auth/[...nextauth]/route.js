@@ -1,10 +1,10 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
-import User from '@/models/user.js'
-import { connectToDB } from '@/lib/utils/database.js'
+import User from '@/models/user'
+import { connectToDB } from '@/lib/utils/database'
 
-export const authOptions = {
+const authOptions = {
   providers: [
     GoogleProvider
       ({
@@ -14,31 +14,33 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session }) {
-      // store the user id from MongoDB to session
-      const sessionUser = await User.findOne({ email: session.user.email });
-      session.user.id = sessionUser._id.toString();
+      const sessionUser = await User.findOne({ email: session.user.email })
+      session.user.id = sessionUser._id.toString()
 
-      return session;
+      return session
     },
-    async signIn({ account, profile, user, credentials }) {
+    async signIn({ profile }) {
+
+      console.log(profile)
+
       try {
-        await connectToDB();
+        await connectToDB()
+        //check if a user already exists
+        const userExists = await User.findOne({ email: profile.email })
 
-        // check if user already exists
-        const userExists = await User.findOne({ email: profile.email });
-
-        // if not, create a new document and save user in MongoDB
+        //if not, create a new user and save him to the database
         if (!userExists) {
           await User.create({
             email: profile.email,
             username: profile.name.replace(" ", "").toLowerCase(),
-            image: profile.picture,
-          });
+            image: profile.picture
+
+          })
         }
 
         return true
       } catch (err) {
-        console.log("Error checking if user exists: ", err.message);
+        console.log(err)
         return false
       }
     },

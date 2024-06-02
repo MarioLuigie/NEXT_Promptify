@@ -13,7 +13,7 @@ import LogoIcon from "/public/assets/images/logo.svg"
 import ProfileIcon from "/public/assets/images/logo.svg"
 
 export default function Nav() {
-  const isUserLoggedIn = true
+  const { data: session } = useSession()
 
   const [providers, setProviders] = useState(null)
   const [isToggledMenu, setIsToggledMenu] = useState(false)
@@ -58,7 +58,7 @@ export default function Nav() {
 
       {/* Desktop navigation */}
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href={paths.createPrompt} className="black_btn">
               Create prompt
@@ -95,7 +95,7 @@ export default function Nav() {
       </div>
       {/* Mobile navigation */}
       <div className="sm:hidden flex relative">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex">
             <Image
               src={ProfileIcon}
