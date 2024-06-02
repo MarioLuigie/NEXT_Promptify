@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 //components
 import Form from '@/components/forms/Form'
 //lib
-import { paths } from '@/lib/constants'
+import { paths, api } from '@/lib/constants'
 
 export default function CreatePromptPage() {
 	const initPost = {

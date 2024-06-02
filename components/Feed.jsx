@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import PromptCard from '@/components/PromptCard'
+import { api } from '@/lib/constants'
 
 const PromptCardList = ({ posts, handleTagClick }) => {
 	return (
@@ -36,7 +37,9 @@ export default function Feed() {
 		setSearchText(e.target.value)
 	}
 
-	const handleTagClick = (e) => {}
+	const handleTagClick = (tag) => () => {
+		console.log(tag)
+	}
 
 	return (
 		<section className="feed">
