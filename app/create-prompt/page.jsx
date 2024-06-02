@@ -7,12 +7,27 @@ import { useRouter } from 'next/navigation'
 import Form from '@/components/forms/Form'
 
 export default function CreatePromptPage() {
-	const [a, setA] = useState()
+	const initPost = {
+		prompt: '',
+		tag: '',
+	}
+
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [post, setPost] = useState(initPost)
 	const { data: session } = useSession()
 	const router = useRouter()
 
-	return (<div>
-    <p>CREATE PROMPT</p>
-    <Form />
-    </div>)
+	const createPrompt = async (e) => {}
+
+	return (
+		<div>
+			<Form
+				type="Create"
+				post={post}
+				setPost={setPost}
+				isSubmitting={isSubmitting}
+				handleSubmit={createPrompt}
+			/>
+		</div>
+	)
 }

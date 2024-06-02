@@ -60,7 +60,7 @@ export default function Nav() {
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href={paths.createPrompt} className="black_btn">
-              Create prompt
+              Create post
             </Link>
             <button type="button" onClick={signOut} className="outline_btn">
               Sign Out
