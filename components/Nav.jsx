@@ -10,7 +10,6 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react"
 import { paths } from "@/lib/constants"
 //images
 import LogoIcon from "/public/assets/images/logo.svg"
-import ProfileIcon from "/public/assets/images/logo.svg"
 
 export default function Nav() {
   const { data: session } = useSession()
@@ -68,7 +67,7 @@ export default function Nav() {
             </button>
             <Link href={paths.profile}>
               <Image
-                src={ProfileIcon}
+                src={session?.user.image}
                 alt="profile"
                 className="rounded-full"
                 width={37}
@@ -98,7 +97,7 @@ export default function Nav() {
         {session?.user ? (
           <div className="flex">
             <Image
-              src={ProfileIcon}
+              src={session?.user.image}
               alt="profile"
               className="rounded-full cursor-pointer"
               width={37}
