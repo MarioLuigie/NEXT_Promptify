@@ -5,7 +5,14 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mongoose"],
   },
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
   webpack(config) {
     config.experiments = {
@@ -24,4 +31,26 @@ export default nextConfig
 
 //Webpack Config: Ta funkcja pozwala na niestandardową konfigurację webpacka, która jest używana przez Next.js. W tym przypadku dodajesz eksperymentalną opcję topLevelAwait, która pozwala na używanie topLevelAwait w Twoim kodzie JavaScript. topLevelAwait to funkcja JavaScript, która pozwala na używanie await na najwyższym poziomie modułu.
 
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   experimental: {
+//     // appDir: true, //nie wymagane w next 14 bo stabilne
+//     serverComponentsExternalPackages: ["mongoose"],
+//   },
+//   images: {
+//     domains: ['lh3.googleusercontent.com'],
+//   }, ====> zdeprecjonowane od Next 14
+//   webpack(config) {
+//     config.experiments = {
+//       ...config.experiments,
+//       topLevelAwait: true,
+//     }
+//     return config
+//   }
+// }
 
+// export default nextConfig
+
+////   images: {
+//     domains: ['lh3.googleusercontent.com'],
+//   }, ====> zdeprecjonowane od Next 14 zastapić tym co powyzej
