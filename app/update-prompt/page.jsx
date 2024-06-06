@@ -1,14 +1,13 @@
 'use client'
 //modules
-import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 //components
 import Form from '@/components/forms/Form'
 //lib
 import { paths, api } from '@/lib/constants'
 
-export default function UpdatePromptPage() {
+function UpdatePrompt() {
 	const initPost = {
 		prompt: '',
 		tag: '',
@@ -73,4 +72,12 @@ export default function UpdatePromptPage() {
 			/>
 		</div>
 	)
+}
+
+export default function UpdatePromptPage() {
+  return (
+    <Suspense>
+      <UpdatePrompt  fallback={<div>Loading...</div>}/>
+    </Suspense>
+  )
 }
