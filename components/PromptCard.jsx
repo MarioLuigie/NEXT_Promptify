@@ -43,6 +43,7 @@ export default function PromptCard({
 						width={37}
 						height={37}
 						className="rounded-full object-contain"
+						priority
 					/>
 				</div>
 
@@ -61,6 +62,7 @@ export default function PromptCard({
 						alt={copied === post.prompt ? 'tick_icon' : 'copy_icon'}
 						width={20}
 						height={20}
+						priority
 					/>
 				</div>
 			</div>
