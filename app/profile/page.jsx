@@ -13,6 +13,7 @@ export default function MyProfilePage() {
 
 	const handleEdit = (post) => () => {
 		console.log('Edit post id:', post._id)
+		router.push(`/update-prompt?id=${post._id}`)
 	}
 
 	const handleDelete = (post) => () => {
