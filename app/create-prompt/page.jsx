@@ -24,7 +24,7 @@ export default function CreatePromptPage() {
 		setIsSubmitting(true)
 
 		try {
-			const res = await fetch('/api/prompt/new', {
+			const res = await fetch(api.createPost, {
 				method: 'POST',
 				body: JSON.stringify({
 					prompt: post.prompt,

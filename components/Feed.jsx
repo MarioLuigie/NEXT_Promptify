@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import PromptCard from '@/components/PromptCard'
-import { api } from '@/lib/constants'
 
 const PromptCardList = ({ posts, handleTagClick }) => {
 	return (

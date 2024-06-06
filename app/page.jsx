@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import Feed from "@/components/Feed"
+import { api } from '@/lib/constants'
 
 export default function Home() {
 	const [posts, setPosts] = useState([])
 
 	const fetchPosts = async () => {
-		const res = await fetch('/api/prompt')
+		const res = await fetch(api.getPosts)
     const data = await res.json()
 		setPosts(data)
-		console.log("data z fetchPosts z PAGE FEED", data);
+		console.log("data z fetchPosts z PAGE FEED", data)
 	}
 
 	useEffect(() => {
@@ -34,3 +35,5 @@ export default function Home() {
 		</section>
 	)
 }
+
+//Funkcja fetchPosts jest asynchroniczna i zwraca Promise, ale useEffect nie może bezpośrednio obsługiwać await. Zamiast tego, wywołujesz funkcję fetchPosts normalnie wewnątrz useEffect. Powód jest taki, że useEffect nie obsługuje bezpośrednio funkcji asynchronicznych.
