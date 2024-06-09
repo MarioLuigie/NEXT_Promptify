@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
+// import { useSession } from 'next-auth/react'
 import Profile from '@/components/Profile'
 
 export default function MyProfilePage() {
 	const [posts, setPosts] = useState([])
-	const { data: session } = useSession()
+	// const { data: session } = useSession()
 
 	const fetchPosts = async () => {
 		const res = await fetch(`/api/users/${session?.user.id}/posts`)
@@ -15,10 +15,10 @@ export default function MyProfilePage() {
 	}
 
 	useEffect(() => {
-		if (session?.user.id) {
+		// if (session?.user.id) {
 			fetchPosts()
-		}
-	}, [session?.user.id])
+		// }
+	}, [])
 
 	return (
 		<Profile
