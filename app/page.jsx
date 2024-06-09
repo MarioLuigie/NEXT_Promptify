@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react'
 import Feed from '@/components/Feed'
 import { api } from '@/lib/constants'
+import { useSession } from 'next-auth/react'
 
 export default function Home() {
 	const [allPosts, setAllPosts] = useState([])
+	const session = useSession()
 
 	const fetchPosts = async () => {
 		const res = await fetch(`/api/prompt?_=${new Date().getTime()}`, {
@@ -13,15 +15,26 @@ export default function Home() {
 				'Cache-Control': 'no-store',
 			},
 		})
+
+		if (!res.ok) {
+			throw new Error(`HTTP error! status: ${res.status}`)
+		}
+
 		const data = await res.json()
 		setAllPosts(data)
 		console.log('data z fetchPosts z PAGE FEED', data)
 	}
 
+	// useEffect(() => {
+	// 	fetchPosts()
+	// 	console.log('*** LOG Z PAGE FEED 1')
+	// }, [])
+
 	useEffect(() => {
-		fetchPosts()
-		console.log('*** LOG Z PAGE FEED 1')
-	}, [])
+		if (session?.user.id) {
+			fetchPosts()
+		}
+	}, [session?.user.id])
 
 	console.log('*** POSTS Z PAGE', allPosts)
 	return (
