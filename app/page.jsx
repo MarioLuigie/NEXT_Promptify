@@ -14,7 +14,7 @@ export default function Home() {
 			},
 		})
 		const data = await res.json()
-		setAllPosts(prev => [...prev, ...data])
+		setAllPosts(data)
 		console.log('data z fetchPosts z PAGE FEED', data)
 	}
 
