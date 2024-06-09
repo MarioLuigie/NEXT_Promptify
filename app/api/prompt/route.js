@@ -3,13 +3,19 @@ import Prompt from '@/models/prompt'
 
 export const GET = async (req, res) => {
   try {
+    console.log("Connecting to DB!!!")
     await connectToDB()
 
+    console.log("Fetching prompts!!!")
     const prompts = await Prompt.find({}).populate('creator')
 
-    console.log('***', prompts)
+    console.log('Fetched prompts!!!:', prompts)
 
-    return new Response(JSON.stringify(prompts), { status: 200 })
+    return new Response(JSON.stringify(prompts), {
+      status: 200, headers: {
+        'Cache-Control': 'no-store'
+      }
+    })
   } catch (err) {
     console.log(err)
     return new Response("Failed to fetch all prompts", { status: 500 })
