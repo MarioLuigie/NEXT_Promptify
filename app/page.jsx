@@ -8,7 +8,7 @@ export default function Home() {
 	const [posts, setPosts] = useState([])
 
 	const fetchPosts = async () => {
-		const res = await fetch(`${api.getPosts}?_=${new Date().getTime()}`, {
+		const res = await fetch(`/api/prompt?_=${new Date().getTime()}`, {
 			headers: {
 				'Cache-Control': 'no-store',
 			},
