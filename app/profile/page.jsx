@@ -15,10 +15,10 @@ export default function MyProfilePage() {
 	}
 
 	useEffect(() => {
-		// if (session?.user.id) {
+		if (session?.user.id) {
 			fetchPosts()
-		// }
-	}, [])
+		}
+	}, [session?.user.id])
 
 	return (
 		<Profile
