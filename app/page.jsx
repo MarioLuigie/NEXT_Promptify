@@ -1,25 +1,29 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Feed from "@/components/Feed"
+import Feed from '@/components/Feed'
 import { api } from '@/lib/constants'
 
 export default function Home() {
 	const [posts, setPosts] = useState([])
 
 	const fetchPosts = async () => {
-		const res = await fetch(api.getPosts)
-    const data = await res.json()
+		const res = await fetch(`${api.getPosts}?_=${new Date().getTime()}`, {
+			headers: {
+				'Cache-Control': 'no-store',
+			},
+		})
+		const data = await res.json()
 		setPosts(data)
-		console.log("data z fetchPosts z PAGE FEED", data)
+		console.log('data z fetchPosts z PAGE FEED', data)
 	}
 
 	useEffect(() => {
 		fetchPosts()
-		console.log("*** LOG Z PAGE FEED 1")
+		console.log('*** LOG Z PAGE FEED 1')
 	}, [])
 
-	console.log("*** POSTS Z PAGE", posts)
+	console.log('*** POSTS Z PAGE', posts)
 	return (
 		<section className="w-full flex-center flex-col">
 			<h1 className="head_text text-center">Discover and Share</h1>
@@ -31,7 +35,7 @@ export default function Home() {
 				Promptify is an open-source AI prompting tool for modern world to
 				discover, create and share creative prompts!
 			</p>
-			<Feed posts={posts}/>
+			<Feed posts={posts} />
 		</section>
 	)
 }
