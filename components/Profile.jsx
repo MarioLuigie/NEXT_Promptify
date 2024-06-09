@@ -3,7 +3,8 @@ import PromptCard from '@/components/PromptCard'
 export default function Profile({
 	name,
 	desc,
-	posts
+	posts,
+	setPosts
 }) {
 	return (
 		<section className="w-full">
@@ -15,6 +16,8 @@ export default function Profile({
 						<PromptCard
 							key={post._id}
 							post={post}
+							setPosts={setPosts}
+							posts={posts}
 						/>
 					))}
 			</div>

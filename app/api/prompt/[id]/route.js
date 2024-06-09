@@ -47,6 +47,9 @@ export const PATCH = async (req, { params }) => {
 }
 //DELETE (to remove)
 export const DELETE = async (req, { params }) => {
+
+  console.log("*** params id:", params.id)
+
   try {
     await connectToDB()
 

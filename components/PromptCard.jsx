@@ -9,10 +9,7 @@ import { paths } from '@/lib/constants'
 import TickIcon from '/public/assets/icons/tick.svg'
 import CopyIcon from '/public/assets/icons/copy.svg'
 
-export default function PromptCard({
-	post,
-	handleTagClick
-}) {
+export default function PromptCard({ post, handleTagClick, setPosts, posts }) {
 	const [copied, setCopied] = useState('')
 	const { data: session } = useSession()
 	const router = useRouter()
@@ -33,8 +30,24 @@ export default function PromptCard({
 		router.push(`/update-prompt?id=${post._id}`)
 	}
 
-	const handleDelete = (post) => () => {
+	const handleDelete = (post) => async () => {
 		console.log('Delete post id:', post._id)
+
+		const hasConfirmed = confirm('Are you sure to remove your post?')
+
+		if (hasConfirmed) {
+			try {
+				await fetch(`/api/prompt/${post._id}`, {
+					method: 'DELETE',
+				})
+
+				const filteredPosts = posts.filter((item) => post._id !== item._id)
+
+				setPosts(filteredPosts)
+			} catch (err) {
+				console.log(err)
+			}
+		}
 	}
 
 	return (
