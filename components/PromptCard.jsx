@@ -11,9 +11,7 @@ import CopyIcon from '/public/assets/icons/copy.svg'
 
 export default function PromptCard({
 	post,
-	handleTagClick,
-	handleEdit,
-	handleDelete,
+	handleTagClick
 }) {
 	const [copied, setCopied] = useState('')
 	const { data: session } = useSession()
@@ -28,6 +26,15 @@ export default function PromptCard({
 		setCopied(post.prompt)
 		navigator.clipboard.writeText(post.prompt)
 		setTimeout(() => setCopied(''), 3000)
+	}
+
+	const handleEdit = (post) => () => {
+		console.log('Edit post id:', post._id)
+		router.push(`/update-prompt?id=${post._id}`)
+	}
+
+	const handleDelete = (post) => () => {
+		console.log('Delete post id:', post._id)
 	}
 
 	return (
@@ -80,13 +87,13 @@ export default function PromptCard({
 				<div className="mt-5 flex-end gap-4 border-t border-gray-300 pt-3">
 					<p
 						className="font-inter text-sm text-gray-600 cursor-pointer"
-						onClick={handleEdit}
+						onClick={handleEdit(post)}
 					>
 						Edit
 					</p>
 					<p
 						className="font-inter text-sm text-red-600 cursor-pointer"
-						onClick={handleDelete}
+						onClick={handleDelete(post)}
 					>
 						Delete
 					</p>

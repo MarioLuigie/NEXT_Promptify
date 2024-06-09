@@ -5,9 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 //components
 import Form from '@/components/forms/Form'
 //lib
-import { paths, api } from '@/lib/constants'
+import { paths } from '@/lib/constants'
 
-function UpdatePrompt() {
+function EditPrompt() {
 	const initPost = {
 		prompt: '',
 		tag: '',
@@ -23,44 +23,58 @@ function UpdatePrompt() {
 		console.log('UpdatePrompt: search params id', promptId)
 
 		const getPromptToEdit = async () => {
-			const res = await fetch(`/api/prompt/${promptId}`)
-			const data = await res.json()
+			try {
+				const res = await fetch(`/api/prompt/${promptId}`)
+				if (!res.ok) {
+					throw new Error(`HTTP error! status: ${res.status}`)
+				}
 
-			console.log('*** data ***', data)
-			setPost({
-				prompt: data.prompt,
-				tag: data.tag,
-			})
+				const data = await res.json()
+
+				console.log('*** data ***', data)
+				setPost({
+					prompt: data.prompt,
+					tag: data.tag,
+				})
+			} catch (err) {
+				console.error('Error fetching prompt data:', err)
+			}
 		}
+
 		if (promptId) {
 			getPromptToEdit()
 		}
 	}, [promptId])
 
-	// const createPrompt = async (e) => {
-	// 	e.preventDefault()
-	// 	setIsSubmitting(true)
+	const updatePrompt = async (e) => {
+		e.preventDefault()
+		setIsSubmitting(true)
 
-	// 	try {
-	// 		const res = await fetch(api.createPost, {
-	// 			method: 'POST',
-	// 			body: JSON.stringify({
-	// 				prompt: post.prompt,
-	// 				tag: post.tag,
-	// 				userId: session?.user.id,
-	// 			}),
-	// 		})
+		if (!promptId) {
+			return alert('Prompt ID not found')
+		}
 
-	// 		if (res.ok) {
-	// 			router.push(paths.home)
-	// 		}
-	// 	} catch (err) {
-	// 		console.log(err)
-	// 	} finally {
-	// 		setIsSubmitting(false)
-	// 	}
-	// }
+		try {
+			const res = await fetch(`/api/prompt/${promptId}`, {
+				method: 'PATCH',
+				body: JSON.stringify({
+					prompt: post.prompt,
+					tag: post.tag,
+				}),
+			})
 
+			if (res.ok) {
+				router.push(paths.home)
+			} else {
+				throw new Error(`HTTP error! status: ${res.status}`)
+			}
+
+		} catch (err) {
+			console.log(err)
+		} finally {
+			setIsSubmitting(false)
+		}
+	}
 	return (
 		<div>
 			<Form
@@ -68,16 +82,16 @@ function UpdatePrompt() {
 				post={post}
 				setPost={setPost}
 				isSubmitting={isSubmitting}
-				handleSubmit={() => {}}
+				handleSubmit={updatePrompt}
 			/>
 		</div>
 	)
 }
 
 export default function UpdatePromptPage() {
-  return (
-    <Suspense>
-      <UpdatePrompt  fallback={<div>Loading...</div>}/>
-    </Suspense>
-  )
+	return (
+		<Suspense>
+			<EditPrompt fallback={<div>Loading...</div>} />
+		</Suspense>
+	)
 }

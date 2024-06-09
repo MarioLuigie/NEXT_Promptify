@@ -22,6 +22,8 @@ export const GET = async (req, { params }) => {
 //PATCH (to update)
 export const PATCH = async (req, { params }) => {
   const { prompt, tag } = await req.json()
+
+  console.log("*** PARAMS ID:", params.id);
   try {
     await connectToDB()
 
@@ -53,7 +55,7 @@ export const DELETE = async (req, { params }) => {
     return new Response(`Prompt by id: ${params.id} is removed`, { status: 200 })
 
   } catch (err) {
-    console.log(err)
+    console.log("", err)
     return new Response("Failed to remove a prompt", { status: 500 })
   }
 }
