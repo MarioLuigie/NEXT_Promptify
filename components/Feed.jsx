@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import PromptCard from '@/components/PromptCard'
 
-const PromptCardList = ({ posts, handleTagClick }) => {
+const PromptCardList = ({ data, handleTagClick }) => {
 	return (
 		<div className="mt-16 prompt_layout">
-			{posts.length > 0 && posts.map((post) => (
+			{data.map((post) => (
 				<PromptCard
 					key={post._id}
 					post={post}
@@ -18,10 +18,10 @@ const PromptCardList = ({ posts, handleTagClick }) => {
 }
 
 export default function Feed({
-	posts
+	allPosts
 }) {
 
-	console.log("*** POSTS Z FEED", posts)
+	console.log("*** POSTS Z FEED", allPosts)
 
 	const [searchText, setSearchText] = useState('')
 
@@ -45,7 +45,7 @@ export default function Feed({
 					className="search_input peer"
 				/>
 			</form>
-			<PromptCardList posts={posts} handleTagClick={handleTagClick} />
+			<PromptCardList data={allPosts} handleTagClick={handleTagClick} />
 		</section>
 	)
 }

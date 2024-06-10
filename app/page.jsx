@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Feed from '@/components/Feed'
-import { api } from '@/lib/constants'
 
 export default function Home() {
 	const [allPosts, setAllPosts] = useState([])
@@ -40,7 +39,7 @@ export default function Home() {
 				Promptify is an open-source AI prompting tool for modern world to
 				discover, create and share creative prompts!
 			</p>
-			<Feed posts={allPosts} />
+			<Feed allPosts={allPosts} />
 		</section>
 	)
 }
