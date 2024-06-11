@@ -1,8 +1,13 @@
+export const dynamic = 'force-dynamic'
+
 import { connectToDB } from "@/lib/utils/database"
 import Prompt from '@/models/prompt'
 
 export const GET = async (req) => {
   try {
+    const { test } = await req.json()
+
+    console.log("@@@ TEST @@@", test)
     console.log("Connecting to DB!!!")
     await connectToDB()
 
