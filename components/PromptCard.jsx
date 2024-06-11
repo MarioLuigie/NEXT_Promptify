@@ -16,7 +16,7 @@ export default function PromptCard({ post, handleTagClick, setPosts, posts }) {
 	const pathname = usePathname()
 
 	const handleProfileClick = () => {
-		router.push(paths.profile)
+		router.push(`${paths.profile}?user=${post.creator._id}`)
 	}
 
 	const handleCopy = () => {
