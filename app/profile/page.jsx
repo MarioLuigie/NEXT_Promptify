@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import Profile from '@/components/Profile'
 import { useSearchParams } from 'next/navigation'
 
-export default function MyProfilePage() {
+function MyProfilePage() {
 	const [posts, setPosts] = useState([])
 	const { data: session } = useSession()
 
@@ -39,13 +39,19 @@ export default function MyProfilePage() {
 	}, [session?.user.id, userId])
 
 	return (
+		<Profile
+			name="My"
+			desc="Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination"
+			posts={posts}
+			setPosts={setPosts}
+		/>
+	)
+}
+
+export default function ProfilePage() {
+	return (
 		<Suspense fallback={<div>Loading page...</div>}>
-			<Profile
-				name="My"
-				desc="Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination"
-				posts={posts}
-				setPosts={setPosts}
-			/>
+			<MyProfilePage />
 		</Suspense>
 	)
 }
