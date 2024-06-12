@@ -7,40 +7,44 @@ import { useSearchParams } from 'next/navigation'
 
 function MyProfilePage() {
 	const [posts, setPosts] = useState([])
+	const [postCreator, setPostCreator] = useState({})
 	const { data: session } = useSession()
 
 	const searchParams = useSearchParams()
-	const userId = searchParams.get('user')
+	const postCreatorId = searchParams.get('user')
 
-	console.log('LOG Z PROFILE PAGE:', userId)
-
-	// const fetchPosts = async () => {
-	// 	const res = await fetch(`/api/users/${session?.user.id}/posts`)
-	// 	const data = await res.json()
-	// 	setPosts(data)
-	// }
+	// console.log('LOG Z PROFILE PAGE:', userId)
 
 	const fetchPosts = async () => {
-		const res = await fetch(`/api/users/${userId}/posts`)
+		const res = await fetch(`/api/users/${postCreatorId}/posts`)
 		const data = await res.json()
 		setPosts(data)
 	}
 
-	// useEffect(() => {
-	// 	if (session?.user.id) {
-	// 		fetchPosts()
-	// 	}
-	// }, [session?.user.id])
+	const fetchUser = async () => {
+		const res = await fetch(`/api/users/${postCreatorId}`)
+		const data = await res.json()
+		setPostCreator(data)
+	}
 
 	useEffect(() => {
-		if (session?.user.id && userId) {
+		if (session?.user.id) {
 			fetchPosts()
+			fetchUser()
 		}
-	}, [session?.user.id, userId])
+	}, [session?.user.id])
+
+	console.log('LOG Z PROFILE PAGE:', postCreator)
 
 	return (
 		<Profile
-			name="My"
+			name={
+        session?.user.id === postCreatorId 
+        ? 'My' 
+        : postCreator?.username 
+            ? postCreator.username.charAt(0).toUpperCase() + postCreator.username.slice(1)
+            : ''
+    }
 			desc="Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination"
 			posts={posts}
 			setPosts={setPosts}
