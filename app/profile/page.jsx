@@ -39,7 +39,7 @@ export default function MyProfilePage() {
 	}, [session?.user.id, userId])
 
 	return (
-		<Suspense>
+		<Suspense fallback={<div>Loading page...</div>}>
 			<Profile
 				name="My"
 				desc="Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination"
