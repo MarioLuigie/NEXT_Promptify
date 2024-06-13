@@ -4,12 +4,14 @@ import PromptCard from '@/components/PromptCard'
 import { Suspense, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
+import { upperCaseWord } from '@/lib/utils'
 
 export default function Profile() {
 	const [posts, setPosts] = useState([])
 	const [user, setUser] = useState({})
+	const [isLoading, setIsLoading] = useState(true)
 
-	const { data: session, status } = useSession()
+	const { data: session } = useSession()
 
 	const searchParams = useSearchParams()
 	const userId = searchParams.get('user')
@@ -27,18 +29,17 @@ export default function Profile() {
 	}
 
 	useEffect(() => {
-		if (userId) {
-			fetchPosts()
-			fetchUser()
+		const fetchData = async () => {
+			if (userId) {
+				await fetchPosts()
+				await fetchUser()
+			}
+			setIsLoading(false)
 		}
+		fetchData()
 	}, [userId])
 
-	const capitalizeName = (name) => {
-		if (!name) return ''
-		return name.charAt(0).toUpperCase() + name.slice(1)
-	}
-
-	if (status === 'loading') {
+	if (isLoading) {
 		return <div>Loading...</div>
 	}
 
@@ -48,7 +49,7 @@ export default function Profile() {
 				<h1 className="head_text text-left">
 					{session && session.user && session.user.id === userId
 						? 'My'
-						: `${capitalizeName(user.username)}'s`}{' '}
+						: `${upperCaseWord(user.username)}'s`}{' '}
 					Profile
 				</h1>
 				<p className="desc text-left">
