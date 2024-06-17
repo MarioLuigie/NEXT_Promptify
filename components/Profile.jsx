@@ -3,18 +3,20 @@
 import PromptCard from '@/components/PromptCard'
 import { Suspense, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useSearchParams } from 'next/navigation'
+// import { useSearchParams } from 'next/navigation'
 import { upperCaseWord } from '@/lib/utils'
 
-export default function Profile() {
+export default function Profile({ searchParams }) {
 	const [posts, setPosts] = useState([])
 	const [user, setUser] = useState({})
 	const [isLoading, setIsLoading] = useState(true)
 
 	const { data: session } = useSession()
 
-	const searchParams = useSearchParams()
-	const userId = searchParams.get('user')
+	// const searchParams = useSearchParams()
+	// const userId = searchParams.get('user')
+	
+	const userId = searchParams.user
 
 	const fetchPosts = async () => {
 		const res = await fetch(`/api/users/${userId}/posts`)
@@ -44,7 +46,7 @@ export default function Profile() {
 	}
 
 	return (
-		<Suspense fallback={<div>Loading page...</div>}>
+		// <Suspense fallback={<div>Loading page...</div>}>
 			<section className="w-full">
 				<h1 className="head_text text-left">
 					{session && session.user && session.user.id === userId
@@ -68,7 +70,7 @@ export default function Profile() {
 						))}
 				</div>
 			</section>
-		</Suspense>
+		// </Suspense>
 	)
 }
 
