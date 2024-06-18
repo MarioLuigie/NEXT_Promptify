@@ -17,10 +17,12 @@ const PromptCardList = ({ data, handleTagClick }) => {
 	)
 }
 
-export default function Feed() {	
+export default function Feed() {
 	const [allPosts, setAllPosts] = useState([])
 
 	const [searchText, setSearchText] = useState('')
+	const [searchTimeout, setSearchTimeout] = useState(null)
+	const [searchedResults, setSearchedResults] = useState([])
 
 	const fetchPosts = async () => {
 		const res = await fetch(`/api/prompt?_=${new Date().getTime()}`, {
@@ -32,9 +34,10 @@ export default function Feed() {
 		if (!res.ok) {
 			throw new Error(`HTTP error! status: ${res.status}`)
 		}
-		
+
 		const data = await res.json()
 		setAllPosts(data)
+		setSearchedResults(data)
 		console.log('data z fetchPosts z PAGE FEED', data)
 	}
 
@@ -42,12 +45,38 @@ export default function Feed() {
 		fetchPosts()
 	}, [])
 
-	const handleChange = (e) => {
+	const filterPosts = (text) => {
+		const regex = new RegExp(text, 'i') // 'i' flag for case-insensitive search
+		return allPosts.filter(
+			(post) =>
+				regex.test(post.creator.username) ||
+				regex.test(post.tag) ||
+				regex.test(post.prompt) ||
+				regex.test(post.creator.email)
+		)
+	}
+
+	//global search method
+	const handleSearchChange = (e) => {
+		clearTimeout(searchTimeout)
+
 		setSearchText(e.target.value)
+
+		//debounce method
+		setSearchTimeout(
+			setTimeout(() => {
+				const searchResult = filterPosts(e.target.value)
+				setSearchedResults(searchResult)
+			}, 500)
+		)
 	}
 
 	const handleTagClick = (tag) => () => {
 		console.log(tag)
+		setSearchText(tag)
+
+		const searchResult = filterPosts(tag)
+		setSearchedResults(searchResult)
 	}
 
 	return (
@@ -57,12 +86,15 @@ export default function Feed() {
 					type="text"
 					placeholder="Search for prompts"
 					value={searchText}
-					onChange={handleChange}
+					onChange={handleSearchChange}
 					required
 					className="search_input peer"
 				/>
 			</form>
-			<PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+			<PromptCardList
+				data={searchedResults}
+				handleTagClick={handleTagClick}
+			/>
 		</section>
 	)
 }
