@@ -55,8 +55,9 @@ export default function Profile({ searchParams }) {
 					Profile
 				</h1>
 				<p className="desc text-left">
-					Welcome to your personalized profile page. Share your exceptional
-					prompts and inspire others with the power of your imagination
+				{session && session.user && session.user.id === userId
+						? 'Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination'
+						: ""}{' '}
 				</p>
 				<div className="mt-16 prompt_layout">
 					{posts.length > 0 &&

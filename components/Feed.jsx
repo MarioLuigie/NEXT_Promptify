@@ -24,9 +24,6 @@ export default function Feed() {
 
 	const fetchPosts = async () => {
 		const res = await fetch(`/api/prompt?_=${new Date().getTime()}`, {
-			// body: JSON.stringify({
-			// 	test: 'test'
-			// }),
 			headers: {
 				'Cache-Control': 'no-store',
 			},
