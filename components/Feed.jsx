@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import PromptCard from '@/components/PromptCard'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 const PromptCardList = ({ data, handleTagClick }) => {
 	return (
@@ -18,9 +20,12 @@ const PromptCardList = ({ data, handleTagClick }) => {
 }
 
 export default function Feed() {
-	const [allPosts, setAllPosts] = useState([])
+	const router = useRouter()
+	const searchParams = useSearchParams()
+	const searchParamsData = searchParams.get('search')
 
-	const [searchText, setSearchText] = useState('')
+	const [allPosts, setAllPosts] = useState([])
+	const [searchText, setSearchText] = useState(searchParamsData || '')
 	const [searchTimeout, setSearchTimeout] = useState(null)
 	const [searchedResults, setSearchedResults] = useState([])
 
@@ -37,13 +42,30 @@ export default function Feed() {
 
 		const data = await res.json()
 		setAllPosts(data)
-		setSearchedResults(data)
+
+		// Filter posts based on searchParamsData after fetching
+		if (searchParamsData) {
+			const searchResult = filterPosts(searchParamsData)
+			setSearchedResults(searchResult)
+		} else {
+			setSearchedResults(data)
+		}
+
 		console.log('data z fetchPosts z PAGE FEED', data)
 	}
 
 	useEffect(() => {
 		fetchPosts()
 	}, [])
+
+	useEffect(() => {
+		if (searchParamsData) {
+			const searchResult = filterPosts(searchParamsData)
+			setSearchedResults(searchResult)
+		} else {
+			setSearchedResults(allPosts)
+		}
+	}, [searchParamsData, allPosts])
 
 	const filterPosts = (text) => {
 		const regex = new RegExp(text, 'i') // 'i' flag for case-insensitive search
@@ -56,27 +78,27 @@ export default function Feed() {
 		)
 	}
 
-	//global search method
+	// Global search method
 	const handleSearchChange = (e) => {
 		clearTimeout(searchTimeout)
 
 		setSearchText(e.target.value)
 
-		//debounce method
+		// Debounce method
 		setSearchTimeout(
 			setTimeout(() => {
-				const searchResult = filterPosts(e.target.value)
-				setSearchedResults(searchResult)
+				if (e.target.value) {
+					router.push(`/?search=${e.target.value}`)
+				} else {
+					router.push('/')
+				}
 			}, 500)
 		)
 	}
 
 	const handleTagClick = (tag) => () => {
-		console.log(tag)
 		setSearchText(tag)
-
-		const searchResult = filterPosts(tag)
-		setSearchedResults(searchResult)
+		router.push(`/?search=${tag}`)
 	}
 
 	return (
@@ -98,5 +120,3 @@ export default function Feed() {
 		</section>
 	)
 }
-
-//Funkcja fetchPosts jest asynchroniczna i zwraca Promise, ale useEffect nie może bezpośrednio obsługiwać await. Zamiast tego, wywołujesz funkcję fetchPosts normalnie wewnątrz useEffect. Powód jest taki, że useEffect nie obsługuje bezpośrednio funkcji asynchronicznych.
