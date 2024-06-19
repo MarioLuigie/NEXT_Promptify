@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import PromptCard from '@/components/PromptCard'
 import { useRouter } from 'next/navigation'
-import { useSearchParams } from 'next/navigation'
 
 const PromptCardList = ({ data, handleTagClick }) => {
 	return (
@@ -19,10 +18,9 @@ const PromptCardList = ({ data, handleTagClick }) => {
 	)
 }
 
-export default function Feed() {
+export default function Feed({ searchParams }) {
 	const router = useRouter()
-	const searchParams = useSearchParams()
-	const searchParamsData = searchParams.get('search')
+	const searchParamsData = searchParams.search
 
 	const [allPosts, setAllPosts] = useState([])
 	const [searchText, setSearchText] = useState(searchParamsData || '')
